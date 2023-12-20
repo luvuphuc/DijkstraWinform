@@ -1,0 +1,16 @@
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\bin\Debug\net6.0-windows\DijkstraWinform.exe
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\bin\Debug\net6.0-windows\DijkstraWinform.deps.json
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\bin\Debug\net6.0-windows\DijkstraWinform.runtimeconfig.json
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\bin\Debug\net6.0-windows\DijkstraWinform.dll
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\bin\Debug\net6.0-windows\DijkstraWinform.pdb
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.Form1.resources
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.csproj.GenerateResource.cache
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.AssemblyInfoInputs.cache
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.AssemblyInfo.cs
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.csproj.CoreCompileInputs.cache
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.dll
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\refint\DijkstraWinform.dll
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.pdb
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.genruntimeconfig.cache
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\ref\DijkstraWinform.dll
