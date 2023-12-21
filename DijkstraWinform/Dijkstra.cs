@@ -115,5 +115,24 @@ namespace DijkstraWinform
                 Console.WriteLine($"\nNo valid path from node {startNode} to node {endNode}");
             }
         }
+        public Dictionary<int, List<Tuple<int, int>>> GetGraph()
+        {
+            Dictionary<int, List<Tuple<int, int>>> graph = new Dictionary<int, List<Tuple<int, int>>>();
+
+            for (int i = 0; i < vertex; i++)
+            {
+                List<Tuple<int, int>> edges = new List<Tuple<int, int>>();
+                for (int j = 0; j < vertex; j++)
+                {
+                    if (adjMatrix[i, j] != 0)
+                    {
+                        edges.Add(new Tuple<int, int>(j, adjMatrix[i, j]));
+                    }
+                }
+                graph.Add(i, edges);
+            }
+
+            return graph;
+        }
     }
 }

@@ -38,9 +38,13 @@
             countMatrix = new TextBox();
             nodeCount = new Label();
             panel3 = new Panel();
+            panel5 = new Panel();
+            pictureBox1 = new PictureBox();
             panel2.SuspendLayout();
             panel4.SuspendLayout();
             panel1.SuspendLayout();
+            panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // ptnMatrix
@@ -56,7 +60,7 @@
             panel2.Controls.Add(panel1);
             panel2.Location = new Point(543, 12);
             panel2.Name = "panel2";
-            panel2.Size = new Size(962, 441);
+            panel2.Size = new Size(324, 402);
             panel2.TabIndex = 1;
             // 
             // panel4
@@ -137,11 +141,28 @@
             panel3.Size = new Size(482, 256);
             panel3.TabIndex = 2;
             // 
+            // panel5
+            // 
+            panel5.Controls.Add(pictureBox1);
+            panel5.Location = new Point(882, 12);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(600, 402);
+            panel5.TabIndex = 3;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(3, 3);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(594, 396);
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1517, 727);
+            Controls.Add(panel5);
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(ptnMatrix);
@@ -153,6 +174,8 @@
             panel4.PerformLayout();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -168,5 +191,7 @@
         private Panel panel4;
         private Label createGraph;
         private Button graphBtn;
+        private Panel panel5;
+        private PictureBox pictureBox1;
     }
 }
