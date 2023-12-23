@@ -13,6 +13,7 @@ namespace DijkstraWinform
         public int vertex;
         private const int INFINITY = 9999;
         public const int MAX = 10;
+        
         public Dijkstra(int v)
         {
             vertex = v;

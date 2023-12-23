@@ -1,5 +1,8 @@
 using System.ComponentModel;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using System.IO;
+using System.Text;
 
 namespace DijkstraWinform
 {
@@ -11,11 +14,16 @@ namespace DijkstraWinform
         {
             InitializeComponent();
             countMatrix.Validating += countMatrix_Validating;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
+            pictureBox1.CreateGraphics();
+            pictureBox1.BackColor = Color.White;
+            showText.Text = "Choose file have .txt";
+            showText.ReadOnly = true;
         }
         public void LoadMatrix(int n)
         {
@@ -31,10 +39,8 @@ namespace DijkstraWinform
                     TextBox textBox = new TextBox() { Width = 50, Height = 50 };
                     textBox.Location = new Point(oldControl.Location.X + oldControl.Width, oldControl.Location.Y);
                     // Set the value to 0 for the main diagonal
-                    
-                    
-                        textBox.Text = "0";
-                    
+                    textBox.Text = "0";
+
                     ptnMatrix.Controls.Add(textBox);
                     textBoxMatrix[i, j] = textBox; // Store the TextBox in the matrix
                     oldControl = textBox; // Use TextBox as the reference for the next iteration
@@ -99,34 +105,62 @@ namespace DijkstraWinform
             int n;
             if (int.TryParse(countMatrix.Text, out n) && n > 0 && n <= 10)
             {
+
+                if (textBoxMatrix == null)
+                {
+                    LoadMatrix(n);
+                }
+
                 GetMatrixValues(n);
-                // Now, the matrix values are stored in the dijkstra object or perform any other action as needed
-                // Assuming dijkstra has a method to get graph information
-                var graph = dijkstra.GetGraph(); // Replace with the appropriate method
+                var graph = dijkstra.GetGraph();
 
                 // Draw the graph
                 DrawGraph(graph);
             }
+            else
+            {
+                MessageBox.Show("Invalid node count. Please enter a valid node count (1-10).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         private void DrawGraph(Dictionary<int, List<Tuple<int, int>>> graph)
         {
             using (Graphics g = pictureBox1.CreateGraphics())
             {
                 g.Clear(Color.White);
 
-                int radius = 20;
+                int radius = 25;
+                int padding = 10; // Adjust the padding between circles
                 Random random = new Random();
                 Dictionary<int, Point> vertexPositions = new Dictionary<int, Point>();
+                HashSet<Tuple<int, int>> processedEdges = new HashSet<Tuple<int, int>>();
+
+                int circleCount = graph.Count;
+                int centerX = pictureBox1.Width / 2;
+                int centerY = pictureBox1.Height / 2;
+                double angleIncrement = 2 * Math.PI / circleCount;
+
+                int i = 0;
 
                 foreach (var kvp in graph)
                 {
-                    int x = random.Next(20, pictureBox1.Width - 20);
-                    int y = random.Next(20, pictureBox1.Height - 20);
+                    double angle = i * angleIncrement;
+                    int x = (int)(centerX + Math.Cos(angle) * (pictureBox1.Width / 3));
+                    int y = (int)(centerY + Math.Sin(angle) * (pictureBox1.Height / 3));
 
                     g.FillEllipse(Brushes.LightSkyBlue, x - radius, y - radius, 2 * radius, 2 * radius);
-                    g.DrawString(kvp.Key.ToString(), DefaultFont, Brushes.White, x - 6, y - 6);
+
+                    // Increase the font size for vertex labels
+                    Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
+
+                    // Center the label within the circle
+                    int labelX = x - (int)(g.MeasureString(kvp.Key.ToString(), labelFont).Width / 2);
+                    int labelY = y - (int)(g.MeasureString(kvp.Key.ToString(), labelFont).Height / 2);
+
+                    g.DrawString(kvp.Key.ToString(), labelFont, Brushes.White, labelX, labelY);
 
                     vertexPositions.Add(kvp.Key, new Point(x, y));
+                    i++;
                 }
 
                 foreach (var kvp in graph)
@@ -137,32 +171,75 @@ namespace DijkstraWinform
                     foreach (var edge in kvp.Value)
                     {
                         int targetVertex = edge.Item1;
-                        Point targetPoint = vertexPositions[targetVertex];
 
-                        int weight = edge.Item2;
-
-                        if (weight == 0)
-                            continue;
-
-                        // Check if the edge is undirected (0-2)
-                        if ((sourceVertex == 0 && targetVertex == 2) || (sourceVertex == 2 && targetVertex == 0))
+                        // Ensure that we only process each undirected edge once
+                        if (sourceVertex < targetVertex)
                         {
-                            g.DrawLine(Pens.Black, sourcePoint, targetPoint);
+                            Point targetPoint = vertexPositions[targetVertex];
+                            int weight = edge.Item2;
+
+                            Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
+
+                            if (processedEdges.Contains(edgeTuple))
+                                continue;
+
+                            processedEdges.Add(edgeTuple);
+
+                            // Increase the line width for undirected edges
+                            Pen edgePen = new Pen(Color.Black, 2);
+
+                            // Calculate the position of the label
+                            int labelX = (sourcePoint.X + targetPoint.X) / 2;
+                            int labelY = (sourcePoint.Y + targetPoint.Y) / 2;
+
+                            // Calculate the slope of the line
+                            double slope = (double)(targetPoint.Y - sourcePoint.Y) / (targetPoint.X - sourcePoint.X);
+
+                            // Draw a line for undirected edges
+                            g.DrawLine(edgePen, sourcePoint, targetPoint);
+
+                            // Increase the font size for edge weights
+                            Font weightFont = new Font(DefaultFont.FontFamily, 14, FontStyle.Regular); // Adjust the font size here
+
+                            // Introduce an offset to increase the distance
+                            int offset = 20;
+
+                            // Adjust the label position based on the slope and offset
+                            if (slope >= -1 && slope <= 1)
+                            {
+                                // Horizontal or near-horizontal line
+                                labelY -= (int)(g.MeasureString(weight.ToString(), weightFont).Height / 2) + offset;
+                            }
+                            else
+                            {
+                                // Vertical or near-vertical line
+                                labelX -= (int)(g.MeasureString(weight.ToString(), weightFont).Width / 2) + offset;
+                            }
+
+                            g.DrawString(weight.ToString(), weightFont, Brushes.Black, labelX, labelY);
                         }
-                        else
-                        {
-                            // Draw an arrow for directed edges
-                            DrawArrow(g, Pens.Black, sourcePoint, targetPoint, weight);
-                        }
-
-                        int labelX = (sourcePoint.X + targetPoint.X) / 2;
-                        int labelY = (sourcePoint.Y + targetPoint.Y) / 2;
-
-                        labelX -= (int)(g.MeasureString(weight.ToString(), DefaultFont).Width / 2);
-                        labelY -= (int)(g.MeasureString(weight.ToString(), DefaultFont).Height / 2);
-
-                        g.DrawString(weight.ToString(), DefaultFont, Brushes.Black, labelX, labelY);
                     }
+                }
+
+                // Bring the circles and labels to the front
+                foreach (var kvp in graph)
+                {
+                    double angle = i * angleIncrement;
+                    int x = (int)(centerX + Math.Cos(angle) * (pictureBox1.Width / 3));
+                    int y = (int)(centerY + Math.Sin(angle) * (pictureBox1.Height / 3));
+
+                    g.FillEllipse(Brushes.LightSkyBlue, x - radius, y - radius, 2 * radius, 2 * radius);
+
+                    // Increase the font size for vertex labels
+                    Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
+
+                    // Center the label within the circle
+                    int labelX = x - (int)(g.MeasureString(kvp.Key.ToString(), labelFont).Width / 2);
+                    int labelY = y - (int)(g.MeasureString(kvp.Key.ToString(), labelFont).Height / 2);
+
+                    g.DrawString(kvp.Key.ToString(), labelFont, Brushes.White, labelX, labelY);
+
+                    i++;
                 }
             }
         }
@@ -170,46 +247,61 @@ namespace DijkstraWinform
 
 
 
-
-
-
-        private void DrawArrow(Graphics g, Pen pen, Point source, Point target, int weight)
+        private void importFile_Click(object sender, EventArgs e)
         {
-            // Draw a line
-            g.DrawLine(pen, source, target);
+            // Show the OpenFileDialog to select a file
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            openFileDialog.Title = "Select a text file";
 
-            // Calculate the angle of the arrow
-            double angle = Math.Atan2(target.Y - source.Y, target.X - source.X);
-
-            // Set the arrowhead size
-            int arrowSize = 15;
-
-            // Calculate the position of the arrowhead
-            double arrowX = target.X - arrowSize * Math.Cos(angle);
-            double arrowY = target.Y - arrowSize * Math.Sin(angle);
-
-            // Calculate points for the arrowhead
-            double angle1 = angle + Math.PI + 0.3; // 0.3 is an arbitrary angle for the arrowhead
-            double angle2 = angle + Math.PI - 0.3;
-            int x1 = (int)(arrowX + arrowSize * Math.Cos(angle1));
-            int y1 = (int)(arrowY + arrowSize * Math.Sin(angle1));
-            int x2 = (int)(arrowX + arrowSize * Math.Cos(angle2));
-            int y2 = (int)(arrowY + arrowSize * Math.Sin(angle2));
-
-            // Draw the arrowhead
-            g.DrawLine(pen, target, new Point(x1, y1));
-            g.DrawLine(pen, target, new Point(x2, y2));
-
-            // Draw the weight of the edge
-            int labelX = (source.X + target.X) / 2;
-            int labelY = (source.Y + target.Y) / 2;
-
-            // Adjust the position of the weight label
-            labelX -= (int)(g.MeasureString(weight.ToString(), DefaultFont).Width / 2);
-            labelY -= (int)(g.MeasureString(weight.ToString(), DefaultFont).Height / 2);
-
-            g.DrawString(weight.ToString(), DefaultFont, Brushes.Black, labelX, labelY);
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    LoadFromFile(openFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
+
+        private void LoadFromFile(string filePath)
+        {
+            string[] lines = File.ReadAllLines(filePath);
+            if (lines.Length >= 1 && int.TryParse(lines[0], out int n))
+            {
+                countMatrix.Text = n.ToString();
+                dijkstra = new Dijkstra(n);
+                LoadMatrix(n);
+                for (int i = 1; i <= n && i < lines.Length; i++)
+                {
+                    string[] values = lines[i].Split(' ');
+                    for (int j = 0; j < n && j < values.Length; j++)
+                    {
+                        if (int.TryParse(values[j], out int weight))
+                        {
+                            dijkstra.createEdge(i - 1, j, weight);
+                            textBoxMatrix[i - 1, j].Text = weight.ToString();
+                        }
+                    }
+                }
+
+                // Set the text of showText to the file path
+                showText.Text = filePath;
+            }
+            else
+            {
+                MessageBox.Show("Invalid file format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void find_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 }
