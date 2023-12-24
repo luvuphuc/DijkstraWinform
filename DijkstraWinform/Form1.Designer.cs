@@ -48,6 +48,8 @@
             countMatrix = new TextBox();
             nodeCount = new Label();
             panel3 = new Panel();
+            cost = new Label();
+            CostLabel = new Label();
             result = new Label();
             resultLabel = new Label();
             panel5 = new Panel();
@@ -56,7 +58,6 @@
             panel7 = new Panel();
             importFile = new Button();
             showText = new TextBox();
-            CostLabel = new Label();
             ptnMatrix.SuspendLayout();
             panel2.SuspendLayout();
             panel8.SuspendLayout();
@@ -125,7 +126,7 @@
             // 
             floydAlgorithm.AutoSize = true;
             floydAlgorithm.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-            floydAlgorithm.Location = new Point(120, 374);
+            floydAlgorithm.Location = new Point(121, 374);
             floydAlgorithm.Name = "floydAlgorithm";
             floydAlgorithm.Size = new Size(186, 35);
             floydAlgorithm.TabIndex = 4;
@@ -269,6 +270,7 @@
             // panel3
             // 
             panel3.BorderStyle = BorderStyle.FixedSingle;
+            panel3.Controls.Add(cost);
             panel3.Controls.Add(CostLabel);
             panel3.Controls.Add(result);
             panel3.Controls.Add(resultLabel);
@@ -277,11 +279,30 @@
             panel3.Size = new Size(939, 105);
             panel3.TabIndex = 2;
             // 
+            // cost
+            // 
+            cost.AutoSize = true;
+            cost.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            cost.Location = new Point(121, 12);
+            cost.Name = "cost";
+            cost.Size = new Size(0, 38);
+            cost.TabIndex = 10;
+            // 
+            // CostLabel
+            // 
+            CostLabel.AutoSize = true;
+            CostLabel.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            CostLabel.Location = new Point(10, 12);
+            CostLabel.Name = "CostLabel";
+            CostLabel.Size = new Size(110, 38);
+            CostLabel.TabIndex = 9;
+            CostLabel.Text = "Chi phí:";
+            // 
             // result
             // 
             result.AutoSize = true;
             result.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            result.Location = new Point(335, 36);
+            result.Location = new Point(308, 50);
             result.Name = "result";
             result.Size = new Size(0, 38);
             result.TabIndex = 8;
@@ -299,16 +320,17 @@
             // panel5
             // 
             panel5.Controls.Add(pictureBox1);
-            panel5.Location = new Point(882, 12);
+            panel5.Location = new Point(861, 12);
             panel5.Name = "panel5";
-            panel5.Size = new Size(600, 552);
+            panel5.Size = new Size(621, 552);
             panel5.TabIndex = 3;
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(-21, 3);
+            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
+            pictureBox1.Location = new Point(3, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(618, 549);
+            pictureBox1.Size = new Size(615, 549);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
@@ -340,16 +362,6 @@
             showText.Name = "showText";
             showText.Size = new Size(299, 27);
             showText.TabIndex = 0;
-            // 
-            // CostLabel
-            // 
-            CostLabel.AutoSize = true;
-            CostLabel.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
-            CostLabel.Location = new Point(10, 12);
-            CostLabel.Name = "CostLabel";
-            CostLabel.Size = new Size(110, 38);
-            CostLabel.TabIndex = 9;
-            CostLabel.Text = "Chi phí:";
             // 
             // Form1
             // 
@@ -413,5 +425,6 @@
         private Label result;
         private Label resultLabel;
         private Label CostLabel;
+        private Label cost;
     }
 }

@@ -299,9 +299,93 @@ namespace DijkstraWinform
 
         private void find_Click(object sender, EventArgs e)
         {
+            int n;
+            if (int.TryParse(countMatrix.Text, out n) && n > 0 && n <= 10)
+            {
+                if (textBoxMatrix == null)
+                {
+                    LoadMatrix(n);
+                }
 
+                GetMatrixValues(n);
+                var graph = dijkstra.GetGraph();
+
+                // Get start and end nodes
+                int startNodeValue, endNodeValue;
+                if (int.TryParse(startNode.Text, out startNodeValue) && int.TryParse(endNode.Text, out endNodeValue))
+                {
+                    if (startNodeValue >= 0 && startNodeValue < n && endNodeValue >= 0 && endNodeValue < n)
+                    {
+                        if (dijkstraAlgorithm.Checked)
+                        {
+                            // Run Dijkstra's algorithm
+                            List<int> shortestPath;
+                            int pathCost;
+
+                            dijkstra.DijkstraAlgorithm(startNodeValue, endNodeValue, out shortestPath, out pathCost);
+
+                            // Display the result
+                            result.Text = $"{string.Join(" -> ", shortestPath)}";
+                            cost.Text = $"{pathCost}";
+                        }
+                        else if (floydAlgorithm.Checked)
+                        {
+                            /*// Run Floyd's algorithm
+                            int[,] shortestPaths;
+                            int[,] pathCosts;
+
+                            dijkstra.FloydAlgorithm(out shortestPaths, out pathCosts);
+
+                            if (int.TryParse(startNode.Text, out startNodeValue) && int.TryParse(endNode.Text, out endNodeValue))
+                            {
+                                if (startNodeValue >= 0 && startNodeValue < n && endNodeValue >= 0 && endNodeValue < n)
+                                {
+                                    // Construct the shortest path and calculate the cost for Floyd's algorithm
+                                    List<int> shortestPath = new List<int>();
+                                    int currentNode = startNodeValue;
+                                    while (currentNode != endNodeValue)
+                                    {
+                                        shortestPath.Add(currentNode);
+                                        currentNode = shortestPaths[currentNode, endNodeValue];
+                                    }
+                                    shortestPath.Add(endNodeValue);
+
+                                    int pathCost = pathCosts[startNodeValue, endNodeValue];
+
+                                    // Display the result
+                                    result.Text = $"Shortest Path: {string.Join(" -> ", shortestPath)}";
+                                    cost.Text = $"Cost: {pathCost}";
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Invalid start or end node. Please enter valid values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Invalid start or end node. Please enter valid values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }*/
+                        }
+                        else
+                        {
+                            // No algorithm selected
+                            MessageBox.Show("Please select an algorithm.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid start or end node. Please enter valid values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Invalid start or end node. Please enter valid values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Invalid node count. Please enter a valid node count (1-10).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
-
     }
 }
