@@ -113,9 +113,9 @@ namespace DijkstraWinform
 
                 GetMatrixValues(n);
                 var graph = dijkstra.GetGraph();
-
+                List<int> shortestPath = null;
                 // Draw the graph
-                DrawGraph(graph);
+                DrawGraph(graph, shortestPath);
             }
             else
             {
@@ -123,15 +123,14 @@ namespace DijkstraWinform
             }
         }
 
-        private void DrawGraph(Dictionary<int, List<Tuple<int, int>>> graph)
+        private void DrawGraph(Dictionary<int, List<Tuple<int, int>>> graph, List<int> shortestPath)
         {
             using (Graphics g = pictureBox1.CreateGraphics())
             {
                 g.Clear(Color.White);
 
                 int radius = 25;
-                int padding = 10; // Adjust the padding between circles
-                Random random = new Random();
+                int padding = 10;
                 Dictionary<int, Point> vertexPositions = new Dictionary<int, Point>();
                 HashSet<Tuple<int, int>> processedEdges = new HashSet<Tuple<int, int>>();
 
@@ -148,12 +147,17 @@ namespace DijkstraWinform
                     int x = (int)(centerX + Math.Cos(angle) * (pictureBox1.Width / 3));
                     int y = (int)(centerY + Math.Sin(angle) * (pictureBox1.Height / 3));
 
-                    g.FillEllipse(Brushes.LightSkyBlue, x - radius, y - radius, 2 * radius, 2 * radius);
+                    Brush nodeBrush = Brushes.LightSkyBlue;
 
-                    // Increase the font size for vertex labels
+                    // Change the color of nodes in the shortest path to red
+                    if (shortestPath != null && shortestPath.Contains(kvp.Key))
+                    {
+                        nodeBrush = Brushes.Red;
+                    }
+
+                    g.FillEllipse(nodeBrush, x - radius, y - radius, 2 * radius, 2 * radius);
+
                     Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
-
-                    // Center the label within the circle
                     int labelX = x - (int)(g.MeasureString(kvp.Key.ToString(), labelFont).Width / 2);
                     int labelY = y - (int)(g.MeasureString(kvp.Key.ToString(), labelFont).Height / 2);
 
@@ -171,53 +175,40 @@ namespace DijkstraWinform
                     foreach (var edge in kvp.Value)
                     {
                         int targetVertex = edge.Item1;
+                        Point targetPoint = vertexPositions[targetVertex];
+                        int weight = edge.Item2;
 
-                        // Ensure that we only process each undirected edge once
-                        if (sourceVertex < targetVertex)
+                        Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
+
+                        // Change the color of edges in the shortest path to red
+                        if (shortestPath != null && shortestPath.Contains(sourceVertex) && shortestPath.Contains(targetVertex))
                         {
-                            Point targetPoint = vertexPositions[targetVertex];
-                            int weight = edge.Item2;
-
-                            Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
-
-                            if (processedEdges.Contains(edgeTuple))
-                                continue;
-
-                            processedEdges.Add(edgeTuple);
-
-                            // Increase the line width for undirected edges
-                            Pen edgePen = new Pen(Color.Black, 2);
-
-                            // Calculate the position of the label
-                            int labelX = (sourcePoint.X + targetPoint.X) / 2;
-                            int labelY = (sourcePoint.Y + targetPoint.Y) / 2;
-
-                            // Calculate the slope of the line
-                            double slope = (double)(targetPoint.Y - sourcePoint.Y) / (targetPoint.X - sourcePoint.X);
-
-                            // Draw a line for undirected edges
-                            g.DrawLine(edgePen, sourcePoint, targetPoint);
-
-                            // Increase the font size for edge weights
-                            Font weightFont = new Font(DefaultFont.FontFamily, 14, FontStyle.Regular); // Adjust the font size here
-
-                            // Introduce an offset to increase the distance
-                            int offset = 20;
-
-                            // Adjust the label position based on the slope and offset
-                            if (slope >= -1 && slope <= 1)
-                            {
-                                // Horizontal or near-horizontal line
-                                labelY -= (int)(g.MeasureString(weight.ToString(), weightFont).Height / 2) + offset;
-                            }
-                            else
-                            {
-                                // Vertical or near-vertical line
-                                labelX -= (int)(g.MeasureString(weight.ToString(), weightFont).Width / 2) + offset;
-                            }
-
-                            g.DrawString(weight.ToString(), weightFont, Brushes.Black, labelX, labelY);
+                            g.DrawLine(new Pen(Color.Red, 2), sourcePoint, targetPoint);
                         }
+                        else
+                        {
+                            g.DrawLine(new Pen(Color.Black, 2), sourcePoint, targetPoint);
+                        }
+
+                        processedEdges.Add(edgeTuple);
+
+                        Font weightFont = new Font(DefaultFont.FontFamily, 14, FontStyle.Regular);
+                        int offset = 20;
+                        int labelX = (sourcePoint.X + targetPoint.X) / 2;
+                        int labelY = (sourcePoint.Y + targetPoint.Y) / 2;
+
+                        double slope = (double)(targetPoint.Y - sourcePoint.Y) / (targetPoint.X - sourcePoint.X);
+
+                        if (slope >= -1 && slope <= 1)
+                        {
+                            labelY -= (int)(g.MeasureString(weight.ToString(), weightFont).Height / 2) + offset;
+                        }
+                        else
+                        {
+                            labelX -= (int)(g.MeasureString(weight.ToString(), weightFont).Width / 2) + offset;
+                        }
+
+                        g.DrawString(weight.ToString(), weightFont, Brushes.Black, labelX, labelY);
                     }
                 }
 
@@ -228,12 +219,17 @@ namespace DijkstraWinform
                     int x = (int)(centerX + Math.Cos(angle) * (pictureBox1.Width / 3));
                     int y = (int)(centerY + Math.Sin(angle) * (pictureBox1.Height / 3));
 
-                    g.FillEllipse(Brushes.LightSkyBlue, x - radius, y - radius, 2 * radius, 2 * radius);
+                    Brush nodeBrush = Brushes.LightSkyBlue;
 
-                    // Increase the font size for vertex labels
+                    // Change the color of nodes in the shortest path to red
+                    if (shortestPath != null && shortestPath.Contains(kvp.Key))
+                    {
+                        nodeBrush = Brushes.Red;
+                    }
+
+                    g.FillEllipse(nodeBrush, x - radius, y - radius, 2 * radius, 2 * radius);
+
                     Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
-
-                    // Center the label within the circle
                     int labelX = x - (int)(g.MeasureString(kvp.Key.ToString(), labelFont).Width / 2);
                     int labelY = y - (int)(g.MeasureString(kvp.Key.ToString(), labelFont).Height / 2);
 
@@ -243,6 +239,7 @@ namespace DijkstraWinform
                 }
             }
         }
+
 
 
 
@@ -327,6 +324,8 @@ namespace DijkstraWinform
                             // Display the result
                             result.Text = $"{string.Join(" -> ", shortestPath)}";
                             cost.Text = $"{pathCost}";
+                            // Updated call with shortestPath
+                            DrawGraph(graph, shortestPath);
                         }
                         else if (floydAlgorithm.Checked)
                         {
@@ -339,13 +338,17 @@ namespace DijkstraWinform
                             if (shortestPath != null)
                             {
                                 result.Text = $"{string.Join(" -> ", shortestPath)}";
+                                // Updated call with shortestPath
+                                DrawGraph(graph, shortestPath);
                             }
                             else
                             {
                                 result.Text = $"Không có đường đi nào";
                             }
                             cost.Text = $"{pathCost}";
+
                         }
+                        
                     }
                     else
                     {
