@@ -84,7 +84,67 @@ namespace DijkstraWinform
 
             pathCost = distance[endNode];
         }
-       
+        public void FloydAlgorithm(int startNode, int endNode, out List<int> shortestPath, out int pathCost)
+        {
+            int n = adjMatrix.GetLength(0);
+
+            // Initialize the result arrays
+            int[,] dist = new int[n, n];
+            int[,] next = new int[n, n];
+            
+            // Initialize dist and next arrays with the initial graph information
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    dist[i, j] = adjMatrix[i, j];
+                    if (adjMatrix[i, j] == 0) next[i, j] = -1;
+                    else next[i, j] = j;
+                }
+            }
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (dist[i, j] == 0) dist[i, j] = INFINITY;
+                }
+            }
+            // Apply Floyd-Warshall algorithm
+            for (int k = 0; k < n; k++)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < n; j++)
+                    {
+                        if (dist[i, k] == INFINITY || dist[k, j] == INFINITY) continue;
+                        if (dist[i, k] + dist[k, j] < dist[i, j])
+                        {
+                            dist[i, j] = dist[i, k] + dist[k, j];
+                            next[i, j] = next[i, k];
+                        }
+                    }
+                }
+            }
+
+            // Reconstruct the shortest path
+            shortestPath = ReconstructPath(startNode, endNode, next);
+            pathCost = dist[startNode, endNode];
+        }
+
+        private List<int> ReconstructPath(int startNode, int endNode, int[,] next)
+        {
+            List<int> path = new List<int>();
+            path.Add(startNode);
+            // an empty array
+            if (next[startNode, endNode] == -1)
+                return null;
+            while (startNode != endNode)
+            {
+                startNode = next[startNode, endNode];
+                path.Add(startNode);
+            }
+            return path;
+        }
 
 
 
