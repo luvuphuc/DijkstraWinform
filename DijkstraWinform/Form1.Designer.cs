@@ -347,9 +347,9 @@
             // importFile
             // 
             importFile.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-            importFile.Location = new Point(360, 36);
+            importFile.Location = new Point(364, 22);
             importFile.Name = "importFile";
-            importFile.Size = new Size(137, 38);
+            importFile.Size = new Size(137, 52);
             importFile.TabIndex = 1;
             importFile.Text = "Tải tệp lên";
             importFile.UseVisualStyleBackColor = true;
@@ -367,7 +367,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1517, 727);
+            ClientSize = new Size(1517, 802);
             Controls.Add(panel7);
             Controls.Add(panel5);
             Controls.Add(panel3);

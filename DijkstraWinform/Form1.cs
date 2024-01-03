@@ -348,7 +348,7 @@ namespace DijkstraWinform
                             cost.Text = $"{pathCost}";
 
                         }
-                        
+
                     }
                     else
                     {
