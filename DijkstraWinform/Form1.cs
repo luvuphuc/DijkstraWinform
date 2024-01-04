@@ -12,8 +12,7 @@ namespace DijkstraWinform
         private TextBox[,] textBoxMatrix;
         private Dijkstra dijkstra;
         private int dem = 0;
-        private Point? firstNodeClicked = null;
-        private Point? secondNodeClicked = null;
+        private List<Point> nodeLocations = new List<Point>();  
         public Form1()
         {
             InitializeComponent();
@@ -76,7 +75,7 @@ namespace DijkstraWinform
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //xu ly khi click vao nut load
+            //xu ly khi click vao nut ok cua tao ma tran ben trai
             int n = int.Parse(countMatrix.Text);
             dijkstra = new Dijkstra(n);
             LoadMatrix(n);
@@ -113,7 +112,11 @@ namespace DijkstraWinform
                 {
                     LoadMatrix(n);
                 }
-
+                // Check if dijkstra is null before creating a new one
+                if (dijkstra == null)
+                {
+                    dijkstra = new Dijkstra(n);
+                }
                 GetMatrixValues(n);
                 var graph = dijkstra.GetGraph();
                 List<int> shortestPath = null;
@@ -121,7 +124,7 @@ namespace DijkstraWinform
             }
             else
             {
-                MessageBox.Show("Invalid node count. Please enter a valid node count (1-10).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Số lượng điểm cần phải từ 1-10!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -214,7 +217,7 @@ namespace DijkstraWinform
                     }
                 }
 
-                // Bring the circles and labels to the front
+                // Chinh layer cua nut
                 foreach (var kvp in graph)
                 {
                     double angle = i * angleIncrement;
@@ -223,7 +226,7 @@ namespace DijkstraWinform
 
                     Brush nodeBrush = Brushes.LightSkyBlue;
 
-                    // Change the color of nodes in the shortest path to red
+                    // doi mau cac duong di thuoc duong di ngan nhat
                     if (shortestPath != null && shortestPath.Contains(kvp.Key))
                     {
                         nodeBrush = Brushes.Red;
@@ -258,20 +261,20 @@ namespace DijkstraWinform
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error loading file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Lỗi tải file!!!! {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
-
+        //xu ly doc file
         private void LoadFromFile(string filePath)
         {
             string[] lines = File.ReadAllLines(filePath);
             if (lines.Length >= 1 && int.TryParse(lines[0], out int n))
             {
-                countMatrix.Text = n.ToString();
+                countMatrix.Text = n.ToString();    //so luong diem
                 dijkstra = new Dijkstra(n);
                 LoadMatrix(n);
-                for (int i = 1; i <= n && i < lines.Length; i++)
+                for (int i = 1; i <= n && i < lines.Length; i++)    //can bat dau dong 1 vi dong 0 la so luong
                 {
                     string[] values = lines[i].Split(' ');
                     for (int j = 0; j < n && j < values.Length; j++)
@@ -284,7 +287,6 @@ namespace DijkstraWinform
                     }
                 }
 
-                // Set the text of showText to the file path
                 showText.Text = filePath;
             }
             else
@@ -302,7 +304,6 @@ namespace DijkstraWinform
                 {
                     LoadMatrix(nodeCount);
                 }
-
                 GetMatrixValues(nodeCount);
                 var graph = dijkstra.GetGraph();
 
@@ -339,42 +340,44 @@ namespace DijkstraWinform
                                 result.Text = $"{string.Join(" -> ", shortestPath)}";
                                 // Updated call with shortestPath
                                 DrawGraph(graph, shortestPath);
+                                cost.Text = $"{pathCost}";
                             }
                             else
                             {
                                 result.Text = $"Không có đường đi nào";
+                                cost.Text = "0";
                             }
-                            cost.Text = $"{pathCost}";
+
 
                         }
 
                     }
                     else
                     {
-                        MessageBox.Show("Invalid start or end node. Please enter valid values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Giá trị không hợp lệ. Hãy nhập giá trị khác.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Invalid start or end node. Please enter valid values.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Giá trị không hợp lệ. Hãy nhập giá trị khác.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Invalid node count. Please enter a valid node count (1-10).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Số lượng điểm cần phải từ 1-10!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
+        //xu ly nut xoa do thi
+        private void delGraph_Click(object sender, EventArgs e)
         {
-            if (sender is Control control)
+            using (Graphics g = pictureBox1.CreateGraphics())
             {
-                //lay toa do cua diem trong pictureBox1
-                Point clientPoint = control.PointToClient(Cursor.Position);
-                CreateNode(clientPoint);
+                dem = 0;
+                countMatrix.Text = "0";
+                g.Clear(Color.White);
             }
         }
-
+        //ham ve nut
         private void CreateNode(Point location)
         {
             int radius = 25;
@@ -390,17 +393,87 @@ namespace DijkstraWinform
 
                 g.DrawString(dem.ToString(), labelFont, Brushes.White, labelX, labelY);
 
-                dem++; 
+                dem++;
             }
         }
-        //xu ly nut xoa do thi
-        private void delGraph_Click(object sender, EventArgs e)
+        private void pictureBox1_Click(object sender, EventArgs e)
         {
-            using(Graphics g = pictureBox1.CreateGraphics())
+            if (dem < 10)
             {
-                dem = 0;
-                g.Clear(Color.White);
+                if (sender is Control control)
+                {
+                    // Lay toa do cua diem trong pictureBox1
+                    Point clientPoint = control.PointToClient(Cursor.Position);
+                    CreateNode(clientPoint);
+                    countMatrix.Text = dem.ToString();
+                    LoadMatrix(dem);
+
+                    // Luu dia chi cua tung nut
+                    nodeLocations.Add(clientPoint);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Tối đa chỉ được 10 điểm");
             }
         }
+
+        private void connectPath_Click(object sender, EventArgs e)
+        {
+            int radius = 25;
+            if (dem >= 2 && nodeLocations.Count >= 2)
+            {
+                int weight;
+
+                using (Dialog dialog = new Dialog())
+                {
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        weight = dialog.Weight;
+                        int point1 = dialog.Point1;
+                        int point2 = dialog.Point2;
+                        using (Graphics g = pictureBox1.CreateGraphics())
+                        {
+                            //Luu vi tri 2 diem can noi
+                            Point center1 = nodeLocations[point1];
+                            Point center2 = nodeLocations[point2];
+
+                            // ve duong thang
+                            g.DrawLine(new Pen(Color.Black, 2), center1, center2);
+
+                            // Ve lai diem t1
+                            Brush nodeBrush1 = Brushes.LightSkyBlue;
+                            g.FillEllipse(nodeBrush1, center1.X - radius, center1.Y - radius, 2 * radius, 2 * radius);
+                            Font labelFont1 = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
+                            int labelX1 = center1.X - (int)(g.MeasureString(point1.ToString(), labelFont1).Width / 2);
+                            int labelY1 = center1.Y - (int)(g.MeasureString(point1.ToString(), labelFont1).Height / 2);
+                            g.DrawString(point1.ToString(), labelFont1, Brushes.White, labelX1, labelY1);
+
+                            // Ve lai diem t2
+                            Brush nodeBrush2 = Brushes.LightSkyBlue;
+                            g.FillEllipse(nodeBrush2, center2.X - radius, center2.Y - radius, 2 * radius, 2 * radius);
+                            Font labelFont2 = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
+                            int labelX2 = center2.X - (int)(g.MeasureString(point2.ToString(), labelFont2).Width / 2);
+                            int labelY2 = center2.Y - (int)(g.MeasureString(point2.ToString(), labelFont2).Height / 2);
+                            g.DrawString(point2.ToString(), labelFont2, Brushes.White, labelX2, labelY2);
+
+                            textBoxMatrix[point1, point2].Text = weight.ToString();
+                            textBoxMatrix[point2, point1].Text = weight.ToString();
+
+                            // Ve trong so
+                            Point labelLocation = new Point((center1.X + center2.X) / 2, (center1.Y + center2.Y) / 2);
+                            Font weightFont = new Font(DefaultFont.FontFamily, 14, FontStyle.Regular);
+                            g.DrawString(weight.ToString(), weightFont, Brushes.Black, labelLocation);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Cần ít nhất 2 điểm để nối", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
     }
 }

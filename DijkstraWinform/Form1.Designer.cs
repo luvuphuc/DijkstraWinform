@@ -41,6 +41,8 @@
             endNodeLabel = new Label();
             startNodeLabel = new Label();
             panel4 = new Panel();
+            delGraph = new Button();
+            label1 = new Label();
             graphBtn = new Button();
             createGraph = new Label();
             panel1 = new Panel();
@@ -58,8 +60,7 @@
             panel7 = new Panel();
             importFile = new Button();
             showText = new TextBox();
-            label1 = new Label();
-            delGraph = new Button();
+            connectPath = new Button();
             ptnMatrix.SuspendLayout();
             panel2.SuspendLayout();
             panel8.SuspendLayout();
@@ -199,6 +200,7 @@
             // 
             // panel4
             // 
+            panel4.Controls.Add(connectPath);
             panel4.Controls.Add(delGraph);
             panel4.Controls.Add(label1);
             panel4.Controls.Add(graphBtn);
@@ -208,10 +210,31 @@
             panel4.Size = new Size(312, 133);
             panel4.TabIndex = 1;
             // 
+            // delGraph
+            // 
+            delGraph.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            delGraph.Location = new Point(182, 48);
+            delGraph.Name = "delGraph";
+            delGraph.Size = new Size(60, 33);
+            delGraph.TabIndex = 5;
+            delGraph.Text = "OK";
+            delGraph.UseVisualStyleBackColor = true;
+            delGraph.Click += delGraph_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(3, 48);
+            label1.Name = "label1";
+            label1.Size = new Size(119, 31);
+            label1.TabIndex = 4;
+            label1.Text = "Xóa đồ thị";
+            // 
             // graphBtn
             // 
             graphBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            graphBtn.Location = new Point(182, 27);
+            graphBtn.Location = new Point(182, 0);
             graphBtn.Name = "graphBtn";
             graphBtn.Size = new Size(60, 33);
             graphBtn.TabIndex = 3;
@@ -223,7 +246,7 @@
             // 
             createGraph.AutoSize = true;
             createGraph.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-            createGraph.Location = new Point(4, 27);
+            createGraph.Location = new Point(3, 0);
             createGraph.Name = "createGraph";
             createGraph.Size = new Size(117, 31);
             createGraph.TabIndex = 0;
@@ -332,9 +355,9 @@
             // pictureBox1
             // 
             pictureBox1.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox1.Location = new Point(3, 3);
+            pictureBox1.Location = new Point(3, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(615, 549);
+            pictureBox1.Size = new Size(615, 552);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
@@ -367,26 +390,18 @@
             showText.Size = new Size(299, 27);
             showText.TabIndex = 0;
             // 
-            // label1
+            // connectPath
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(2, 77);
-            label1.Name = "label1";
-            label1.Size = new Size(119, 31);
-            label1.TabIndex = 4;
-            label1.Text = "Xóa đồ thị";
-            // 
-            // delGraph
-            // 
-            delGraph.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            delGraph.Location = new Point(182, 75);
-            delGraph.Name = "delGraph";
-            delGraph.Size = new Size(60, 33);
-            delGraph.TabIndex = 5;
-            delGraph.Text = "OK";
-            delGraph.UseVisualStyleBackColor = true;
-            delGraph.Click += delGraph_Click;
+            connectPath.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            connectPath.ImageAlign = ContentAlignment.TopLeft;
+            connectPath.Location = new Point(7, 82);
+            connectPath.Name = "connectPath";
+            connectPath.Size = new Size(151, 43);
+            connectPath.TabIndex = 6;
+            connectPath.Text = "Nối đường đi";
+            connectPath.TextAlign = ContentAlignment.TopLeft;
+            connectPath.UseVisualStyleBackColor = true;
+            connectPath.Click += connectPath_Click;
             // 
             // Form1
             // 
@@ -453,5 +468,6 @@
         private Label cost;
         private Button delGraph;
         private Label label1;
+        private Button connectPath;
     }
 }
