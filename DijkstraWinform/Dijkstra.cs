@@ -72,7 +72,7 @@ namespace DijkstraWinform
                 count++;
             }
 
-            // Construct the shortest path and calculate the cost
+            //tinh chi phi cua duong di ngan nhat
             shortestPath = new List<int>();
             int currentNode = endNode;
             while (currentNode != -1)
@@ -80,7 +80,7 @@ namespace DijkstraWinform
                 shortestPath.Add(currentNode);
                 currentNode = pred[currentNode];
             }
-            shortestPath.Reverse(); // Reverse the path to get it from start to end
+            shortestPath.Reverse(); // dao nguoc mang lai de lay tu dau -> cuoi
 
             pathCost = distance[endNode];
         }
@@ -109,7 +109,7 @@ namespace DijkstraWinform
                     if (dist[i, j] == 0) dist[i, j] = INFINITY;
                 }
             }
-            // Apply Floyd-Warshall algorithm
+            //Floyd-Warshall algorithm
             for (int k = 0; k < n; k++)
             {
                 for (int i = 0; i < n; i++)

@@ -3,13 +3,17 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.IO;
 using System.Text;
+using System.Xml;
 
 namespace DijkstraWinform
 {
     public partial class Form1 : Form
     {
-        private TextBox[,] textBoxMatrix; // Matrix to hold TextBox controls
+        private TextBox[,] textBoxMatrix;
         private Dijkstra dijkstra;
+        private int dem = 0;
+        private Point? firstNodeClicked = null;
+        private Point? secondNodeClicked = null;
         public Form1()
         {
             InitializeComponent();
@@ -24,11 +28,12 @@ namespace DijkstraWinform
             pictureBox1.BackColor = Color.White;
             showText.Text = "Choose file have .txt";
             showText.ReadOnly = true;
+            pictureBox1.MouseClick += pictureBox1_Click;
         }
         public void LoadMatrix(int n)
         {
             ptnMatrix.Controls.Clear();
-            textBoxMatrix = new TextBox[10, 10]; // Initialize the matrix
+            textBoxMatrix = new TextBox[10, 10]; // khoi tao ma tran
 
             Control oldControl = new Control() { Width = 0, Height = 0, Location = new Point(0, 0) };
 
@@ -36,20 +41,21 @@ namespace DijkstraWinform
             {
                 for (int j = 0; j < n; j++)
                 {
+                    //do dai cho textbox
                     TextBox textBox = new TextBox() { Width = 50, Height = 50 };
                     textBox.Location = new Point(oldControl.Location.X + oldControl.Width, oldControl.Location.Y);
-                    // Set the value to 0 for the main diagonal
+                    //hien thi gia tri cho tung o textbox
                     textBox.Text = "0";
 
                     ptnMatrix.Controls.Add(textBox);
-                    textBoxMatrix[i, j] = textBox; // Store the TextBox in the matrix
-                    oldControl = textBox; // Use TextBox as the reference for the next iteration
+                    textBoxMatrix[i, j] = textBox; // luu gia tri
+                    oldControl = textBox;
                 }
                 oldControl = new Control() { Width = 0, Height = 0, Location = new Point(0, oldControl.Location.Y + 50) };
             }
         }
 
-        // Example method to retrieve values from TextBox controls
+        //lay gia tri va tao ma tran 
         private void GetMatrixValues(int n)
         {
             for (int i = 0; i < n; i++)
@@ -70,11 +76,9 @@ namespace DijkstraWinform
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Get the value from textbox1
+            //xu ly khi click vao nut load
             int n = int.Parse(countMatrix.Text);
-            // Initialize the dijkstra object
             dijkstra = new Dijkstra(n);
-            // Set the matrix values using the entered value
             LoadMatrix(n);
         }
 
@@ -92,14 +96,13 @@ namespace DijkstraWinform
 
         private void countMatrix_Validating(object sender, CancelEventArgs e)
         {
-            Console.WriteLine("Validating event triggered"); // Check if this line is printed
             int n;
             if (!int.TryParse(countMatrix.Text, out n) || n < 1 || n > 10)
             {
                 countMatrix.Text = "10";
             }
         }
-
+        //xu ly khi click vao nut tao ma tran
         private void graphBtn_Click(object sender, EventArgs e)
         {
             int n;
@@ -114,7 +117,6 @@ namespace DijkstraWinform
                 GetMatrixValues(n);
                 var graph = dijkstra.GetGraph();
                 List<int> shortestPath = null;
-                // Draw the graph
                 DrawGraph(graph, shortestPath);
             }
             else
@@ -149,12 +151,12 @@ namespace DijkstraWinform
 
                     Brush nodeBrush = Brushes.LightSkyBlue;
 
-                    // Change the color of nodes in the shortest path to red
+                    // doi mau 
                     if (shortestPath != null && shortestPath.Contains(kvp.Key))
                     {
                         nodeBrush = Brushes.Red;
                     }
-
+                    //ve vong tron
                     g.FillEllipse(nodeBrush, x - radius, y - radius, 2 * radius, 2 * radius);
 
                     Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
@@ -241,12 +243,9 @@ namespace DijkstraWinform
         }
 
 
-
-
-
         private void importFile_Click(object sender, EventArgs e)
         {
-            // Show the OpenFileDialog to select a file
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             openFileDialog.Title = "Select a text file";
@@ -366,6 +365,42 @@ namespace DijkstraWinform
             }
         }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            if (sender is Control control)
+            {
+                //lay toa do cua diem trong pictureBox1
+                Point clientPoint = control.PointToClient(Cursor.Position);
+                CreateNode(clientPoint);
+            }
+        }
 
+        private void CreateNode(Point location)
+        {
+            int radius = 25;
+
+            using (Graphics g = pictureBox1.CreateGraphics())
+            {
+                Brush nodeBrush = Brushes.LightSkyBlue;
+                g.FillEllipse(nodeBrush, location.X - radius, location.Y - radius, 2 * radius, 2 * radius);
+
+                Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
+                int labelX = location.X - (int)(g.MeasureString(dem.ToString(), labelFont).Width / 2);
+                int labelY = location.Y - (int)(g.MeasureString(dem.ToString(), labelFont).Height / 2);
+
+                g.DrawString(dem.ToString(), labelFont, Brushes.White, labelX, labelY);
+
+                dem++; 
+            }
+        }
+        //xu ly nut xoa do thi
+        private void delGraph_Click(object sender, EventArgs e)
+        {
+            using(Graphics g = pictureBox1.CreateGraphics())
+            {
+                dem = 0;
+                g.Clear(Color.White);
+            }
+        }
     }
 }

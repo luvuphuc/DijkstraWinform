@@ -15,3 +15,4 @@ C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\ne
 C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.genruntimeconfig.cache
 C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\ref\DijkstraWinform.dll
 C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.Properties.Resources.resources
+C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.Dialog.resources

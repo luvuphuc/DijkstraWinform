@@ -58,6 +58,8 @@
             panel7 = new Panel();
             importFile = new Button();
             showText = new TextBox();
+            label1 = new Label();
+            delGraph = new Button();
             ptnMatrix.SuspendLayout();
             panel2.SuspendLayout();
             panel8.SuspendLayout();
@@ -105,7 +107,7 @@
             // 
             algorithm.AutoSize = true;
             algorithm.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-            algorithm.Location = new Point(9, 328);
+            algorithm.Location = new Point(6, 370);
             algorithm.Name = "algorithm";
             algorithm.Size = new Size(129, 31);
             algorithm.TabIndex = 6;
@@ -114,7 +116,7 @@
             // find
             // 
             find.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-            find.Location = new Point(87, 437);
+            find.Location = new Point(87, 465);
             find.Name = "find";
             find.Size = new Size(149, 67);
             find.TabIndex = 5;
@@ -126,7 +128,7 @@
             // 
             floydAlgorithm.AutoSize = true;
             floydAlgorithm.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-            floydAlgorithm.Location = new Point(121, 374);
+            floydAlgorithm.Location = new Point(121, 415);
             floydAlgorithm.Name = "floydAlgorithm";
             floydAlgorithm.Size = new Size(186, 35);
             floydAlgorithm.TabIndex = 4;
@@ -138,7 +140,7 @@
             // 
             dijkstraAlgorithm.AutoSize = true;
             dijkstraAlgorithm.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-            dijkstraAlgorithm.Location = new Point(9, 374);
+            dijkstraAlgorithm.Location = new Point(6, 415);
             dijkstraAlgorithm.Name = "dijkstraAlgorithm";
             dijkstraAlgorithm.Size = new Size(112, 35);
             dijkstraAlgorithm.TabIndex = 3;
@@ -153,7 +155,7 @@
             panel8.Controls.Add(startNode);
             panel8.Controls.Add(endNodeLabel);
             panel8.Controls.Add(startNodeLabel);
-            panel8.Location = new Point(-1, 178);
+            panel8.Location = new Point(0, 228);
             panel8.Name = "panel8";
             panel8.Size = new Size(311, 139);
             panel8.TabIndex = 2;
@@ -189,7 +191,7 @@
             startNodeLabel.AutoSize = true;
             startNodeLabel.BackColor = Color.Transparent;
             startNodeLabel.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
-            startNodeLabel.Location = new Point(6, 17);
+            startNodeLabel.Location = new Point(6, 19);
             startNodeLabel.Name = "startNodeLabel";
             startNodeLabel.Size = new Size(158, 31);
             startNodeLabel.TabIndex = 4;
@@ -197,17 +199,19 @@
             // 
             // panel4
             // 
+            panel4.Controls.Add(delGraph);
+            panel4.Controls.Add(label1);
             panel4.Controls.Add(graphBtn);
             panel4.Controls.Add(createGraph);
             panel4.Location = new Point(-1, 89);
             panel4.Name = "panel4";
-            panel4.Size = new Size(312, 83);
+            panel4.Size = new Size(312, 133);
             panel4.TabIndex = 1;
             // 
             // graphBtn
             // 
             graphBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            graphBtn.Location = new Point(151, 27);
+            graphBtn.Location = new Point(182, 27);
             graphBtn.Name = "graphBtn";
             graphBtn.Size = new Size(60, 33);
             graphBtn.TabIndex = 3;
@@ -363,6 +367,27 @@
             showText.Size = new Size(299, 27);
             showText.TabIndex = 0;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(2, 77);
+            label1.Name = "label1";
+            label1.Size = new Size(119, 31);
+            label1.TabIndex = 4;
+            label1.Text = "Xóa đồ thị";
+            // 
+            // delGraph
+            // 
+            delGraph.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            delGraph.Location = new Point(182, 75);
+            delGraph.Name = "delGraph";
+            delGraph.Size = new Size(60, 33);
+            delGraph.TabIndex = 5;
+            delGraph.Text = "OK";
+            delGraph.UseVisualStyleBackColor = true;
+            delGraph.Click += delGraph_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -426,5 +451,7 @@
         private Label resultLabel;
         private Label CostLabel;
         private Label cost;
+        private Button delGraph;
+        private Label label1;
     }
 }
