@@ -306,11 +306,13 @@ namespace DijkstraWinform
                 {
                     LoadMatrix(nodeCount);
                 }
+
                 // Check if dijkstra is null before creating a new one
                 if (dijkstra == null)
                 {
                     dijkstra = new Dijkstra(int.Parse(countMatrix.Text));
                 }
+
                 GetMatrixValues(nodeCount);
                 var graph = dijkstra.GetGraph();
 
@@ -327,84 +329,38 @@ namespace DijkstraWinform
                             int pathCost;
 
                             dijkstra.DijkstraAlgorithm(startNodeValue, endNodeValue, out shortestPath, out pathCost);
-
-                            // Display the result
-                            result.Text = $"{string.Join(" -> ", shortestPath)}";
-                            cost.Text = $"{pathCost}";
-
-                            // Change color for nodes in the shortest path
-                            using (Graphics g = pictureBox1.CreateGraphics())
+                            if(shortestPath != null)
                             {
-                                int radius = 25;
-                                foreach (var vertex in shortestPath)
-                                {
-                                    Point center = nodeLocations[vertex];
-                                    Brush nodeBrush = Brushes.Red;
-                                    g.FillEllipse(nodeBrush, center.X - radius, center.Y - radius, 2 * radius, 2 * radius);
-
-                                    Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
-                                    int labelX = center.X - (int)(g.MeasureString(vertex.ToString(), labelFont).Width / 2);
-                                    int labelY = center.Y - (int)(g.MeasureString(vertex.ToString(), labelFont).Height / 2);
-                                    g.DrawString(vertex.ToString(), labelFont, Brushes.White, labelX, labelY);
-                                }
-
-                                // Change color for edges in the shortest path
-                                for (int i = 0; i < shortestPath.Count - 1; i++)
-                                {
-                                    int sourceVertex = shortestPath[i];
-                                    int targetVertex = shortestPath[i + 1];
-                                    Point sourcePoint = nodeLocations[sourceVertex];
-                                    Point targetPoint = nodeLocations[targetVertex];
-
-                                    Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
-
-                                    g.DrawLine(new Pen(Color.Red, 2), sourcePoint, targetPoint);
-                                }
-                                // Change color for nodes not in the shortest path
-                                for (int vertex = 0; vertex < nodeLocations.Count; vertex++)
-                                {
-                                    if (!shortestPath.Contains(vertex))
-                                    {
-                                        Point center = nodeLocations[vertex];
-                                        Brush nodeBrush = Brushes.LightSkyBlue;
-                                        g.FillEllipse(nodeBrush, center.X - radius, center.Y - radius, 2 * radius, 2 * radius);
-
-                                        Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
-                                        int labelX = center.X - (int)(g.MeasureString(vertex.ToString(), labelFont).Width / 2);
-                                        int labelY = center.Y - (int)(g.MeasureString(vertex.ToString(), labelFont).Height / 2);
-                                        g.DrawString(vertex.ToString(), labelFont, Brushes.White, labelX, labelY);
-                                    }
-                                }
-                            }
-                        }
-                        else if (floydAlgorithm.Checked)
-                        {
-                            // Run Floyd's algorithm
-                            
-                            List<int> shortestPath;
-                            int pathCost;
-                            
-                            dijkstra.FloydAlgorithm(startNodeValue, endNodeValue, out shortestPath, out pathCost);
-                            // Display the result
-                            if (shortestPath != null)
-                            {
+                                // Display the result
                                 result.Text = $"{string.Join(" -> ", shortestPath)}";
                                 cost.Text = $"{pathCost}";
 
-                                // Change color for nodes in the shortest path
+                                // Change color for edges not in the shortest path
                                 using (Graphics g = pictureBox1.CreateGraphics())
                                 {
                                     int radius = 25;
-                                    foreach (var vertex in shortestPath)
-                                    {
-                                        Point center = nodeLocations[vertex];
-                                        Brush nodeBrush = Brushes.Red;
-                                        g.FillEllipse(nodeBrush, center.X - radius, center.Y - radius, 2 * radius, 2 * radius);
 
-                                        Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
-                                        int labelX = center.X - (int)(g.MeasureString(vertex.ToString(), labelFont).Width / 2);
-                                        int labelY = center.Y - (int)(g.MeasureString(vertex.ToString(), labelFont).Height / 2);
-                                        g.DrawString(vertex.ToString(), labelFont, Brushes.White, labelX, labelY);
+                                    // Change color for all edges not in the shortest path to black
+                                    foreach (var entry in graph)
+                                    {
+                                        int sourceVertex = entry.Key;
+                                        List<Tuple<int, int>> edges = entry.Value;
+
+                                        foreach (var edge in edges)
+                                        {
+                                            int targetVertex = edge.Item1;
+
+                                            Point sourcePoint = nodeLocations[sourceVertex];
+                                            Point targetPoint = nodeLocations[targetVertex];
+
+                                            Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
+
+                                            if (!shortestPath.Contains(sourceVertex) || !shortestPath.Contains(targetVertex))
+                                            {
+                                                // Change color for edges not in the shortest path to black
+                                                g.DrawLine(new Pen(Color.Black, 2), sourcePoint, targetPoint);
+                                            }
+                                        }
                                     }
 
                                     // Change color for edges in the shortest path
@@ -419,6 +375,112 @@ namespace DijkstraWinform
 
                                         g.DrawLine(new Pen(Color.Red, 2), sourcePoint, targetPoint);
                                     }
+
+                                    // Change color for nodes in the shortest path
+                                    foreach (var vertex in shortestPath)
+                                    {
+                                        Point center = nodeLocations[vertex];
+                                        Brush nodeBrush = Brushes.Red;
+                                        g.FillEllipse(nodeBrush, center.X - radius, center.Y - radius, 2 * radius, 2 * radius);
+
+                                        Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
+                                        int labelX = center.X - (int)(g.MeasureString(vertex.ToString(), labelFont).Width / 2);
+                                        int labelY = center.Y - (int)(g.MeasureString(vertex.ToString(), labelFont).Height / 2);
+                                        g.DrawString(vertex.ToString(), labelFont, Brushes.White, labelX, labelY);
+                                    }
+
+                                    // Change color for nodes not in the shortest path
+                                    for (int vertex = 0; vertex < nodeLocations.Count; vertex++)
+                                    {
+                                        if (!shortestPath.Contains(vertex))
+                                        {
+                                            Point center = nodeLocations[vertex];
+                                            Brush nodeBrush = Brushes.LightSkyBlue;
+                                            g.FillEllipse(nodeBrush, center.X - radius, center.Y - radius, 2 * radius, 2 * radius);
+
+                                            Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
+                                            int labelX = center.X - (int)(g.MeasureString(vertex.ToString(), labelFont).Width / 2);
+                                            int labelY = center.Y - (int)(g.MeasureString(vertex.ToString(), labelFont).Height / 2);
+                                            g.DrawString(vertex.ToString(), labelFont, Brushes.White, labelX, labelY);
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                result.Text = $"Không có đường đi nào";
+                                cost.Text = "0";
+                            }
+                            
+                        }
+                        else if (floydAlgorithm.Checked)
+                        {
+                            // Run Floyd's algorithm
+                            List<int> shortestPath;
+                            int pathCost;
+
+                            dijkstra.FloydAlgorithm(startNodeValue, endNodeValue, out shortestPath, out pathCost);
+
+                            // Display the result
+                            if (shortestPath != null)
+                            {
+                                result.Text = $"{string.Join(" -> ", shortestPath)}";
+                                cost.Text = $"{pathCost}";
+
+                                // Change color for edges not in the shortest path
+                                using (Graphics g = pictureBox1.CreateGraphics())
+                                {
+                                    int radius = 25;
+
+                                    // Change color for all edges not in the shortest path to black
+                                    foreach (var entry in graph)
+                                    {
+                                        int sourceVertex = entry.Key;
+                                        List<Tuple<int, int>> edges = entry.Value;
+
+                                        foreach (var edge in edges)
+                                        {
+                                            int targetVertex = edge.Item1;
+
+                                            Point sourcePoint = nodeLocations[sourceVertex];
+                                            Point targetPoint = nodeLocations[targetVertex];
+
+                                            Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
+
+                                            if (!shortestPath.Contains(sourceVertex) || !shortestPath.Contains(targetVertex))
+                                            {
+                                                // Change color for edges not in the shortest path to black
+                                                g.DrawLine(new Pen(Color.Black, 2), sourcePoint, targetPoint);
+                                            }
+                                        }
+                                    }
+
+                                    // Change color for edges in the shortest path
+                                    for (int i = 0; i < shortestPath.Count - 1; i++)
+                                    {
+                                        int sourceVertex = shortestPath[i];
+                                        int targetVertex = shortestPath[i + 1];
+                                        Point sourcePoint = nodeLocations[sourceVertex];
+                                        Point targetPoint = nodeLocations[targetVertex];
+
+                                        Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
+
+                                        g.DrawLine(new Pen(Color.Red, 2), sourcePoint, targetPoint);
+                                    }
+
+                                    // Change color for nodes in the shortest path
+                                    foreach (var vertex in shortestPath)
+                                    {
+                                        Point center = nodeLocations[vertex];
+                                        Brush nodeBrush = Brushes.Red;
+                                        g.FillEllipse(nodeBrush, center.X - radius, center.Y - radius, 2 * radius, 2 * radius);
+
+                                        Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
+                                        int labelX = center.X - (int)(g.MeasureString(vertex.ToString(), labelFont).Width / 2);
+                                        int labelY = center.Y - (int)(g.MeasureString(vertex.ToString(), labelFont).Height / 2);
+                                        g.DrawString(vertex.ToString(), labelFont, Brushes.White, labelX, labelY);
+                                    }
+
                                     // Change color for nodes not in the shortest path
                                     for (int vertex = 0; vertex < nodeLocations.Count; vertex++)
                                     {
@@ -458,7 +520,9 @@ namespace DijkstraWinform
                 MessageBox.Show("Số lượng điểm cần phải từ 1-10!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
+
+
+
 
         //xu ly nut xoa do thi
         private void delGraph_Click(object sender, EventArgs e)

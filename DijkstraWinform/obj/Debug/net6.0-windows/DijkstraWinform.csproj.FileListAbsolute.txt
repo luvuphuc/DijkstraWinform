@@ -16,3 +16,21 @@ C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\ne
 C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\ref\DijkstraWinform.dll
 C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.Properties.Resources.resources
 C:\Users\Vu Phuc\Documents\Code\ASP\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.Dialog.resources
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\bin\Debug\net6.0-windows\DijkstraWinform.exe
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\bin\Debug\net6.0-windows\DijkstraWinform.deps.json
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\bin\Debug\net6.0-windows\DijkstraWinform.runtimeconfig.json
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\bin\Debug\net6.0-windows\DijkstraWinform.dll
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\bin\Debug\net6.0-windows\DijkstraWinform.pdb
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.Dialog.resources
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.Form1.resources
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.Properties.Resources.resources
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.csproj.GenerateResource.cache
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.AssemblyInfoInputs.cache
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.AssemblyInfo.cs
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.csproj.CoreCompileInputs.cache
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.dll
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\refint\DijkstraWinform.dll
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.pdb
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\DijkstraWinform.genruntimeconfig.cache
+C:\Users\ADMIN\OneDrive\Documents\GitHub\DijkstraWinform\DijkstraWinform\obj\Debug\net6.0-windows\ref\DijkstraWinform.dll

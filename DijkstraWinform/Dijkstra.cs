@@ -71,18 +71,28 @@ namespace DijkstraWinform
 
                 count++;
             }
-
-            //tinh chi phi cua duong di ngan nhat
-            shortestPath = new List<int>();
-            int currentNode = endNode;
-            while (currentNode != -1)
+            // Check if there is a path from the start node to the end node
+            if (distance[endNode] == INFINITY)
             {
-                shortestPath.Add(currentNode);
-                currentNode = pred[currentNode];
-            }
-            shortestPath.Reverse(); // dao nguoc mang lai de lay tu dau -> cuoi
 
-            pathCost = distance[endNode];
+                shortestPath = null;
+                pathCost = 0;
+            }
+            else
+            {
+                //tinh chi phi cua duong di ngan nhat
+                shortestPath = new List<int>();
+                int currentNode = endNode;
+                while (currentNode != -1)
+                {
+                    shortestPath.Add(currentNode);
+                    currentNode = pred[currentNode];
+                }
+                shortestPath.Reverse(); // dao nguoc mang lai de lay tu dau -> cuoi
+
+                pathCost = distance[endNode];
+            }
+           
         }
         public void FloydAlgorithm(int startNode, int endNode, out List<int> shortestPath, out int pathCost)
         {
