@@ -30,7 +30,7 @@ namespace DijkstraWinform
             bool[] visited = new bool[vertex];
             int count, minDistance, nextNode = 0;
 
-            // Initialize pred[], distance[], and visited[]
+            //khoi tao pred[], distance[], and visited[]
             for (int i = 0; i < vertex; i++)
             {
                 distance[i] = INFINITY;
@@ -44,7 +44,7 @@ namespace DijkstraWinform
             while (count < vertex)
             {
                 minDistance = INFINITY;
-                // nextNode gives the node at minimum distance
+                // nextNode giu cac nut co khoang cach ngan nhat
                 for (int i = 0; i < vertex; i++)
                 {
                     if (!visited[i] && distance[i] < minDistance)
@@ -54,11 +54,12 @@ namespace DijkstraWinform
                     }
                 }
 
-                // Check if a better path exists through nextNode
+                //danh dau duong di
                 visited[nextNode] = true;
 
                 for (int i = 0; i < vertex; i++)
                 {
+                    //kiem tra xem co duong di nao ngan khac khong
                     if (!visited[i] && adjMatrix[nextNode, i] != 0)
                     {
                         if (distance[nextNode] + adjMatrix[nextNode, i] < distance[i])
@@ -71,7 +72,7 @@ namespace DijkstraWinform
 
                 count++;
             }
-            // Check if there is a path from the start node to the end node
+            // Kiem tra co duong di ngan nhat hay khong
             if (distance[endNode] == INFINITY)
             {
 
@@ -98,11 +99,9 @@ namespace DijkstraWinform
         {
             int n = adjMatrix.GetLength(0);
 
-            // Initialize the result arrays
+            // khai bao va khoi tao mang de luu kqua
             int[,] dist = new int[n, n];
             int[,] next = new int[n, n];
-            
-            // Initialize dist and next arrays with the initial graph information
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
@@ -119,7 +118,7 @@ namespace DijkstraWinform
                     if (dist[i, j] == 0) dist[i, j] = INFINITY;
                 }
             }
-            //Floyd-Warshall algorithm
+            //Floyd-Warshall
             for (int k = 0; k < n; k++)
             {
                 for (int i = 0; i < n; i++)
@@ -136,18 +135,19 @@ namespace DijkstraWinform
                 }
             }
 
-            // Reconstruct the shortest path
+            // xay dung duong di ngan nhat
             shortestPath = ReconstructPath(startNode, endNode, next);
             pathCost = dist[startNode, endNode];
         }
-
+        //
         private List<int> ReconstructPath(int startNode, int endNode, int[,] next)
         {
             List<int> path = new List<int>();
             path.Add(startNode);
-            // an empty array
+            //kiem tra co duong di tu diem dau,cuoi hay khong
             if (next[startNode, endNode] == -1)
                 return null;
+            //su dung vong lap while de tim ra duong di ngan nhat
             while (startNode != endNode)
             {
                 startNode = next[startNode, endNode];
@@ -157,7 +157,7 @@ namespace DijkstraWinform
         }
 
 
-
+        // giup luu do thi o dang danh sach ke
         public Dictionary<int, List<Tuple<int, int>>> GetGraph()
         {
             Dictionary<int, List<Tuple<int, int>>> graph = new Dictionary<int, List<Tuple<int, int>>>();

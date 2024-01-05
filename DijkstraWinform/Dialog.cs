@@ -33,7 +33,7 @@ namespace DijkstraWinform
             }
             else
             {
-                MessageBox.Show("Please enter a valid integer.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Hãy nhập giá trị số nguyên", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

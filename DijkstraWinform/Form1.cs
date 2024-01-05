@@ -133,12 +133,12 @@ namespace DijkstraWinform
             using (Graphics g = pictureBox1.CreateGraphics())
             {
                 g.Clear(Color.White);
-
-                int radius = 25;
-                int padding = 10;
-                Dictionary<int, Point> vertexPositions = new Dictionary<int, Point>();
-                HashSet<Tuple<int, int>> processedEdges = new HashSet<Tuple<int, int>>();
-                int circleCount = graph.Count;
+                
+                int radius = 25;    //ban kinh cua nut
+                int padding = 10;   
+                Dictionary<int, Point> vertexPositions = new Dictionary<int, Point>();  //luu cac dinh
+                HashSet<Tuple<int, int>> processedEdges = new HashSet<Tuple<int, int>>();   //luu cac canh
+                int circleCount = graph.Count;  
                 int centerX = pictureBox1.Width / 2;
                 int centerY = pictureBox1.Height / 2;
                 double angleIncrement = 2 * Math.PI / circleCount;
@@ -150,23 +150,18 @@ namespace DijkstraWinform
                     double angle = i * angleIncrement;
                     int x = (int)(centerX + Math.Cos(angle) * (pictureBox1.Width / 3));
                     int y = (int)(centerY + Math.Sin(angle) * (pictureBox1.Height / 3));
-                    
-                    Brush nodeBrush = Brushes.LightSkyBlue;
 
-                    // doi mau 
-                    if (shortestPath != null && shortestPath.Contains(kvp.Key))
-                    {
-                        nodeBrush = Brushes.Red;
-                    }
                     //ve vong tron
+                    Brush nodeBrush = Brushes.LightSkyBlue;
                     g.FillEllipse(nodeBrush, x - radius, y - radius, 2 * radius, 2 * radius);
 
+                    //ve so thu tu
                     Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
                     int labelX = x - (int)(g.MeasureString(kvp.Key.ToString(), labelFont).Width / 2);
                     int labelY = y - (int)(g.MeasureString(kvp.Key.ToString(), labelFont).Height / 2);
 
                     g.DrawString(kvp.Key.ToString(), labelFont, Brushes.White, labelX, labelY);
-
+                    //luu vi tri cac nut
                     vertexPositions.Add(kvp.Key, new Point(x, y));
                     i++;
                 }
@@ -181,28 +176,19 @@ namespace DijkstraWinform
                         int targetVertex = edge.Item1;
                         Point targetPoint = vertexPositions[targetVertex];
                         int weight = edge.Item2;
-
                         Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
-
-                        // Change the color of edges in the shortest path to red
-                        if (shortestPath != null && shortestPath.Contains(sourceVertex) && shortestPath.Contains(targetVertex))
-                        {
-                            g.DrawLine(new Pen(Color.Red, 2), sourcePoint, targetPoint);
-                        }
-                        else
-                        {
-                            g.DrawLine(new Pen(Color.Black, 2), sourcePoint, targetPoint);
-                        }
-
+                        
+                        //ve duong noi
+                        g.DrawLine(new Pen(Color.Black, 2), sourcePoint, targetPoint);
                         processedEdges.Add(edgeTuple);
-
+                        //ve trong so
                         Font weightFont = new Font(DefaultFont.FontFamily, 14, FontStyle.Regular);
                         int offset = 20;
                         int labelX = (sourcePoint.X + targetPoint.X) / 2;
                         int labelY = (sourcePoint.Y + targetPoint.Y) / 2;
 
                         double slope = (double)(targetPoint.Y - sourcePoint.Y) / (targetPoint.X - sourcePoint.X);
-
+                        //dat vi tri trong so
                         if (slope >= -1 && slope <= 1)
                         {
                             labelY -= (int)(g.MeasureString(weight.ToString(), weightFont).Height / 2) + offset;
@@ -216,7 +202,7 @@ namespace DijkstraWinform
                     }
                 }
 
-                // Chinh layer cua nut
+                // ve nut them 1 lan nua de layer nut len duong thang
                 foreach (var kvp in graph)
                 {
                     double angle = i * angleIncrement;
@@ -224,16 +210,6 @@ namespace DijkstraWinform
                     int y = (int)(centerY + Math.Sin(angle) * (pictureBox1.Height / 3));
 
                     Brush nodeBrush = Brushes.LightSkyBlue;
-
-                    // doi mau cac duong di thuoc duong di ngan nhat
-                    if (shortestPath != null && shortestPath.Contains(kvp.Key))
-                    {
-                        nodeBrush = Brushes.Red;
-                    }
-                    else
-                    {
-                        nodeBrush = Brushes.LightSkyBlue; // Node not in the shortest path
-                    }
                     g.FillEllipse(nodeBrush, x - radius, y - radius, 2 * radius, 2 * radius);
 
                     Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
@@ -247,7 +223,7 @@ namespace DijkstraWinform
             }
         }
 
-
+        // xu ly file
         private void importFile_Click(object sender, EventArgs e)
         {
 
@@ -281,6 +257,7 @@ namespace DijkstraWinform
                     string[] values = lines[i].Split(' ');
                     for (int j = 0; j < n && j < values.Length; j++)
                     {
+                        //kiem tra dk cho gtri ma tran
                         if (int.TryParse(values[j], out int weight))
                         {
                             dijkstra.createEdge(i - 1, j, weight);
@@ -293,7 +270,7 @@ namespace DijkstraWinform
             }
             else
             {
-                MessageBox.Show("Invalid file format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("File không hợp lệ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -307,7 +284,7 @@ namespace DijkstraWinform
                     LoadMatrix(nodeCount);
                 }
 
-                // Check if dijkstra is null before creating a new one
+                //khoi tao dijkstra neu ko co dijkstra (hdt)
                 if (dijkstra == null)
                 {
                     dijkstra = new Dijkstra(int.Parse(countMatrix.Text));
@@ -316,31 +293,33 @@ namespace DijkstraWinform
                 GetMatrixValues(nodeCount);
                 var graph = dijkstra.GetGraph();
 
-                // Get start and end nodes
+                //lay gia tri diem dau, diem cuoi
                 int startNodeValue, endNodeValue;
                 if (int.TryParse(startNode.Text, out startNodeValue) && int.TryParse(endNode.Text, out endNodeValue))
                 {
+                    //kiem tra diem dau, cuoi hop le hay khong
                     if (startNodeValue >= 0 && startNodeValue < nodeCount && endNodeValue >= 0 && endNodeValue < nodeCount)
                     {
+                        //xu ly dijkstra
                         if (dijkstraAlgorithm.Checked)
                         {
-                            // Run Dijkstra's algorithm
+                            
                             List<int> shortestPath;
                             int pathCost;
 
                             dijkstra.DijkstraAlgorithm(startNodeValue, endNodeValue, out shortestPath, out pathCost);
                             if(shortestPath != null)
                             {
-                                // Display the result
+                                // Hien thi ket qua khi co duong di ngan nhat
                                 result.Text = $"{string.Join(" -> ", shortestPath)}";
                                 cost.Text = $"{pathCost}";
 
-                                // Change color for edges not in the shortest path
+                                // doi mau cac diem va duong di
                                 using (Graphics g = pictureBox1.CreateGraphics())
                                 {
                                     int radius = 25;
 
-                                    // Change color for all edges not in the shortest path to black
+                                    // giu nguyen mau cho cac duong di ko thuoc duong di ngan nhat
                                     foreach (var entry in graph)
                                     {
                                         int sourceVertex = entry.Key;
@@ -356,14 +335,13 @@ namespace DijkstraWinform
                                             Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
 
                                             if (!shortestPath.Contains(sourceVertex) || !shortestPath.Contains(targetVertex))
-                                            {
-                                                // Change color for edges not in the shortest path to black
+                                            { 
                                                 g.DrawLine(new Pen(Color.Black, 2), sourcePoint, targetPoint);
                                             }
                                         }
                                     }
 
-                                    // Change color for edges in the shortest path
+                                    // Doi mau cac canh thuoc duong di
                                     for (int i = 0; i < shortestPath.Count - 1; i++)
                                     {
                                         int sourceVertex = shortestPath[i];
@@ -376,7 +354,7 @@ namespace DijkstraWinform
                                         g.DrawLine(new Pen(Color.Red, 2), sourcePoint, targetPoint);
                                     }
 
-                                    // Change color for nodes in the shortest path
+                                    // Doi mau cac nut thuoc duong di
                                     foreach (var vertex in shortestPath)
                                     {
                                         Point center = nodeLocations[vertex];
@@ -389,7 +367,7 @@ namespace DijkstraWinform
                                         g.DrawString(vertex.ToString(), labelFont, Brushes.White, labelX, labelY);
                                     }
 
-                                    // Change color for nodes not in the shortest path
+                                    // Doi mau cac nut khong thuoc duong di
                                     for (int vertex = 0; vertex < nodeLocations.Count; vertex++)
                                     {
                                         if (!shortestPath.Contains(vertex))
@@ -413,26 +391,27 @@ namespace DijkstraWinform
                             }
                             
                         }
+                        //floyd-washall
                         else if (floydAlgorithm.Checked)
                         {
-                            // Run Floyd's algorithm
+                            
                             List<int> shortestPath;
                             int pathCost;
 
                             dijkstra.FloydAlgorithm(startNodeValue, endNodeValue, out shortestPath, out pathCost);
 
-                            // Display the result
+                            // Hien thi ket qua khi co duong di ngan nhat
                             if (shortestPath != null)
                             {
                                 result.Text = $"{string.Join(" -> ", shortestPath)}";
                                 cost.Text = $"{pathCost}";
 
-                                // Change color for edges not in the shortest path
+                                // doi mau cac diem va duong di
                                 using (Graphics g = pictureBox1.CreateGraphics())
                                 {
                                     int radius = 25;
 
-                                    // Change color for all edges not in the shortest path to black
+                                    // giu nguyen mau cho cac duong di ko thuoc duong di ngan nhat
                                     foreach (var entry in graph)
                                     {
                                         int sourceVertex = entry.Key;
@@ -449,13 +428,12 @@ namespace DijkstraWinform
 
                                             if (!shortestPath.Contains(sourceVertex) || !shortestPath.Contains(targetVertex))
                                             {
-                                                // Change color for edges not in the shortest path to black
                                                 g.DrawLine(new Pen(Color.Black, 2), sourcePoint, targetPoint);
                                             }
                                         }
                                     }
 
-                                    // Change color for edges in the shortest path
+                                    // Doi mau cac canh thuoc duong di
                                     for (int i = 0; i < shortestPath.Count - 1; i++)
                                     {
                                         int sourceVertex = shortestPath[i];
@@ -468,7 +446,7 @@ namespace DijkstraWinform
                                         g.DrawLine(new Pen(Color.Red, 2), sourcePoint, targetPoint);
                                     }
 
-                                    // Change color for nodes in the shortest path
+                                    // Doi mau cac nut thuoc duong di
                                     foreach (var vertex in shortestPath)
                                     {
                                         Point center = nodeLocations[vertex];
@@ -481,7 +459,7 @@ namespace DijkstraWinform
                                         g.DrawString(vertex.ToString(), labelFont, Brushes.White, labelX, labelY);
                                     }
 
-                                    // Change color for nodes not in the shortest path
+                                    // Doi mau cac nut khong thuoc duong di
                                     for (int vertex = 0; vertex < nodeLocations.Count; vertex++)
                                     {
                                         if (!shortestPath.Contains(vertex))
