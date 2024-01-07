@@ -112,7 +112,6 @@ namespace DijkstraWinform
                 {
                     LoadMatrix(n);
                 }
-                // Check if dijkstra is null before creating a new one
                 if (dijkstra == null)
                 {
                     dijkstra = new Dijkstra(n);
@@ -505,13 +504,15 @@ namespace DijkstraWinform
         //xu ly nut xoa do thi
         private void delGraph_Click(object sender, EventArgs e)
         {
-            using (Graphics g = pictureBox1.CreateGraphics())
-            {
-                dem = 0;
-                countMatrix.Text = "0";
-                g.Clear(Color.White);
-                nodeLocations =new List<Point>();
-            }
+            // Xoa do thi
+            pictureBox1.CreateGraphics().Clear(Color.White);
+            //xu ly cac bien
+            dem = 0;
+            nodeLocations.Clear();
+            dijkstra = null;
+            textBoxMatrix = null; ;
+            ptnMatrix.Controls.Clear();
+            Refresh();
         }
         //ham ve nut
         private void CreateNode(Point location)
@@ -609,5 +610,6 @@ namespace DijkstraWinform
                 MessageBox.Show("Cần ít nhất 2 điểm để nối", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        
     }
 }
