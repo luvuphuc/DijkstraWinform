@@ -139,7 +139,7 @@ namespace DijkstraWinform
             shortestPath = ReconstructPath(startNode, endNode, next);
             pathCost = dist[startNode, endNode];
         }
-        //
+        //tai tao duong di lai
         private List<int> ReconstructPath(int startNode, int endNode, int[,] next)
         {
             List<int> path = new List<int>();

@@ -12,7 +12,7 @@ namespace DijkstraWinform
         private TextBox[,] textBoxMatrix;
         private Dijkstra dijkstra;
         private int dem = 0;
-        private List<Point> nodeLocations = new List<Point>();  
+        private List<Point> nodeLocations = new List<Point>();
         public Form1()
         {
             InitializeComponent();
@@ -68,22 +68,12 @@ namespace DijkstraWinform
             }
         }
 
-        private void countMatrix_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             //xu ly khi click vao nut ok cua tao ma tran ben trai
             int n = int.Parse(countMatrix.Text);
             dijkstra = new Dijkstra(n);
             LoadMatrix(n);
-        }
-
-        private void nodeCount_Click(object sender, EventArgs e)
-        {
-
         }
         private void countMatrix_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -132,12 +122,12 @@ namespace DijkstraWinform
             using (Graphics g = pictureBox1.CreateGraphics())
             {
                 g.Clear(Color.White);
-                
+
                 int radius = 25;    //ban kinh cua nut
-                int padding = 10;   
+                int padding = 10;
                 Dictionary<int, Point> vertexPositions = new Dictionary<int, Point>();  //luu cac dinh
                 HashSet<Tuple<int, int>> processedEdges = new HashSet<Tuple<int, int>>();   //luu cac canh
-                int circleCount = graph.Count;  
+                int circleCount = graph.Count;
                 int centerX = pictureBox1.Width / 2;
                 int centerY = pictureBox1.Height / 2;
                 double angleIncrement = 2 * Math.PI / circleCount;
@@ -176,7 +166,7 @@ namespace DijkstraWinform
                         Point targetPoint = vertexPositions[targetVertex];
                         int weight = edge.Item2;
                         Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
-                        
+
                         //ve duong noi
                         g.DrawLine(new Pen(Color.Black, 2), sourcePoint, targetPoint);
                         processedEdges.Add(edgeTuple);
@@ -302,12 +292,12 @@ namespace DijkstraWinform
                         //xu ly dijkstra
                         if (dijkstraAlgorithm.Checked)
                         {
-                            
+
                             List<int> shortestPath;
                             int pathCost;
 
                             dijkstra.DijkstraAlgorithm(startNodeValue, endNodeValue, out shortestPath, out pathCost);
-                            if(shortestPath != null)
+                            if (shortestPath != null)
                             {
                                 // Hien thi ket qua khi co duong di ngan nhat
                                 result.Text = $"{string.Join(" -> ", shortestPath)}";
@@ -334,7 +324,7 @@ namespace DijkstraWinform
                                             Tuple<int, int> edgeTuple = new Tuple<int, int>(sourceVertex, targetVertex);
 
                                             if (!shortestPath.Contains(sourceVertex) || !shortestPath.Contains(targetVertex))
-                                            { 
+                                            {
                                                 g.DrawLine(new Pen(Color.Black, 2), sourcePoint, targetPoint);
                                             }
                                         }
@@ -388,12 +378,12 @@ namespace DijkstraWinform
                                 result.Text = $"Không có đường đi nào";
                                 cost.Text = "0";
                             }
-                            
+
                         }
                         //floyd-washall
                         else if (floydAlgorithm.Checked)
                         {
-                            
+
                             List<int> shortestPath;
                             int pathCost;
 
@@ -466,7 +456,6 @@ namespace DijkstraWinform
                                             Point center = nodeLocations[vertex];
                                             Brush nodeBrush = Brushes.LightSkyBlue;
                                             g.FillEllipse(nodeBrush, center.X - radius, center.Y - radius, 2 * radius, 2 * radius);
-
                                             Font labelFont = new Font(DefaultFont.FontFamily, 12, FontStyle.Regular);
                                             int labelX = center.X - (int)(g.MeasureString(vertex.ToString(), labelFont).Width / 2);
                                             int labelY = center.Y - (int)(g.MeasureString(vertex.ToString(), labelFont).Height / 2);
@@ -610,6 +599,6 @@ namespace DijkstraWinform
                 MessageBox.Show("Cần ít nhất 2 điểm để nối", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
+
     }
 }

@@ -41,6 +41,7 @@
             endNodeLabel = new Label();
             startNodeLabel = new Label();
             panel4 = new Panel();
+            connectPath = new Button();
             delGraph = new Button();
             label1 = new Label();
             graphBtn = new Button();
@@ -60,7 +61,6 @@
             panel7 = new Panel();
             importFile = new Button();
             showText = new TextBox();
-            connectPath = new Button();
             ptnMatrix.SuspendLayout();
             panel2.SuspendLayout();
             panel8.SuspendLayout();
@@ -210,6 +210,19 @@
             panel4.Size = new Size(312, 133);
             panel4.TabIndex = 1;
             // 
+            // connectPath
+            // 
+            connectPath.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            connectPath.ImageAlign = ContentAlignment.TopLeft;
+            connectPath.Location = new Point(7, 82);
+            connectPath.Name = "connectPath";
+            connectPath.Size = new Size(151, 43);
+            connectPath.TabIndex = 6;
+            connectPath.Text = "Nối đường đi";
+            connectPath.TextAlign = ContentAlignment.TopLeft;
+            connectPath.UseVisualStyleBackColor = true;
+            connectPath.Click += connectPath_Click;
+            // 
             // delGraph
             // 
             delGraph.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
@@ -281,7 +294,6 @@
             countMatrix.Name = "countMatrix";
             countMatrix.Size = new Size(56, 34);
             countMatrix.TabIndex = 1;
-            countMatrix.TextChanged += countMatrix_TextChanged;
             // 
             // nodeCount
             // 
@@ -292,7 +304,6 @@
             nodeCount.Size = new Size(151, 31);
             nodeCount.TabIndex = 0;
             nodeCount.Text = "Số lượng nút:";
-            nodeCount.Click += nodeCount_Click;
             // 
             // panel3
             // 
@@ -390,24 +401,11 @@
             showText.Size = new Size(299, 27);
             showText.TabIndex = 0;
             // 
-            // connectPath
-            // 
-            connectPath.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            connectPath.ImageAlign = ContentAlignment.TopLeft;
-            connectPath.Location = new Point(7, 82);
-            connectPath.Name = "connectPath";
-            connectPath.Size = new Size(151, 43);
-            connectPath.TabIndex = 6;
-            connectPath.Text = "Nối đường đi";
-            connectPath.TextAlign = ContentAlignment.TopLeft;
-            connectPath.UseVisualStyleBackColor = true;
-            connectPath.Click += connectPath_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1517, 802);
+            ClientSize = new Size(1517, 740);
             Controls.Add(panel7);
             Controls.Add(panel5);
             Controls.Add(panel3);
