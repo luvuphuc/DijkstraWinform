@@ -107,7 +107,13 @@ namespace DijkstraWinform
                 for (int j = 0; j < n; j++)
                 {
                     dist[i, j] = adjMatrix[i, j];
-                    if (adjMatrix[i, j] == 0) next[i, j] = -1;
+                    if (adjMatrix[i, j] == 0) { 
+                        if(i == j)
+                        {
+                            next[i, j] = j;
+                        }
+                        else next[i, j] = -1;
+                    } 
                     else next[i, j] = j;
                 }
             }
@@ -115,7 +121,17 @@ namespace DijkstraWinform
             {
                 for (int j = 0; j < n; j++)
                 {
-                    if (dist[i, j] == 0) dist[i, j] = INFINITY;
+                    if (dist[i, j] == 0)
+                    {
+                        if (i == j)
+                        {
+                            dist[i, j] = 0;
+                        }
+                        else
+                        {
+                            dist[i, j] = INFINITY;
+                        }
+                    }
                 }
             }
             //Floyd-Warshall
